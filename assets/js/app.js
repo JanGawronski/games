@@ -25,11 +25,29 @@ import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/games"
 import topbar from "../vendor/topbar"
 
+let Hooks = {}
+Hooks.Nick = {
+  mounted() {
+    const saved = localStorage.getItem("nick")
+    if (saved) {
+      this.pushEvent("set_nick", {nick: saved})
+    }
+
+    const form = this.el.querySelector('form[phx-submit="set_nick"]')
+    if (form) {
+      form.addEventListener("submit", () => {
+        const v = form.querySelector('input[name="nick"]')?.value
+        if (v) localStorage.setItem("nick", v)
+      })
+    }
+  }
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: {...colocatedHooks, ...Hooks},
 })
 
 // Show progress bar on live navigation and form submits

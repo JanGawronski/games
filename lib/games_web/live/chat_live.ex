@@ -13,7 +13,7 @@ defmodule GamesWeb.ChatLive do
 
   def render(assigns) do
     ~H"""
-    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+    <div id="nick-hook" phx-hook="Nick" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
       <div style="max-width:640px;width:100%;padding:1rem;">
         <ul>
           <%= for %{:message => message, :author => author} <- @messages do %>
