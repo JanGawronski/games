@@ -14,7 +14,8 @@ defmodule Games.Application do
       # Start a worker by calling: Games.Worker.start_link(arg)
       # {Games.Worker, arg},
       # Start to serve requests, typically the last entry
-      GamesWeb.Endpoint
+      GamesWeb.Endpoint,
+      Games.Chat.MessageStore,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
