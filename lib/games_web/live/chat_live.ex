@@ -37,9 +37,13 @@ defmodule GamesWeb.ChatLive do
   end
 
   def handle_event("send", %{"message" => text}, socket) do
-    MessageStore.add(text, socket.assigns.nick)
-    PubSub.broadcast(Games.PubSub, @topic, :new_message)
-    {:noreply, assign(socket, messages: MessageStore.all)}
+    if String.trim(text) != "" do
+      MessageStore.add(text, socket.assigns.nick)
+      PubSub.broadcast(Games.PubSub, @topic, :new_message)
+      {:noreply, assign(socket, messages: MessageStore.all)}
+    else
+      {:noreply, socket}
+    end
   end
 
   def handle_event("set_nick", %{"nick" => nick}, socket) do
